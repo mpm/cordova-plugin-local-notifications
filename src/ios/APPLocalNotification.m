@@ -25,6 +25,7 @@
 #import "APPLocalNotificationOptions.h"
 #import "UIApplication+APPLocalNotification.h"
 #import "UILocalNotification+APPLocalNotification.h"
+#import "UILocalNotification+APPUserNotificationActions.h"
 #import "AppDelegate+APPRegisterUserNotificationSettings.h"
 
 @interface APPLocalNotification ()
@@ -77,6 +78,10 @@
 
             notification = [[UILocalNotification alloc]
                             initWithOptions:options];
+
+            [notification setActions:options[@"actions"]];
+
+            notification.category = @"USER_NOTIFICATION_CATEGORY";
 
             [self scheduleLocalNotification:[notification copy]];
             [self fireEvent:@"schedule" notification:notification];
@@ -649,6 +654,11 @@
     [center addObserver:self
                selector:@selector(didRegisterUserNotificationSettings:)
                    name:UIApplicationRegisterUserNotificationSettings
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(application:handleActionWithIdentifier:forLocalNotification:completionHandler:)
+                   name:CDVLocalNotification
                  object:nil];
 }
 
