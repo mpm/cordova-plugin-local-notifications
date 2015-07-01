@@ -27,6 +27,7 @@
 #import "UILocalNotification+APPLocalNotification.h"
 #import "UILocalNotification+APPUserNotificationActions.h"
 #import "AppDelegate+APPRegisterUserNotificationSettings.h"
+#import "AppDelegate+APPHandleActionWithIdentifier.h"
 
 @interface APPLocalNotification ()
 
@@ -628,6 +629,12 @@
     }
 }
 
+- (void) handleActionWithIdentifier:(NSNotification*)notification
+{
+    NSDictionary* userInfo = [notification userInfo];
+    [self fireEvent:@"action" notification:userInfo[@"localNotification"]];
+}
+
 #pragma mark -
 #pragma mark Life Cycle
 
@@ -657,8 +664,8 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(application:handleActionWithIdentifier:forLocalNotification:completionHandler:)
-                   name:CDVLocalNotification
+               selector:@selector(handleActionWithIdentifier:)
+                   name:UIApplicationHandleActionWithIdentifier
                  object:nil];
 }
 
