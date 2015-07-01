@@ -33,7 +33,7 @@ NSString* const UIApplicationHandleActionWithIdentifier = @"UIApplicationHandleA
              completionHandler:(void (^)())completionHandler
 {
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-        notification, @"notification",
+        notification, @"localNotification",
         identifier, @"identifier",
         nil
     ];
