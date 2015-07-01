@@ -77,6 +77,9 @@
         <header-file src="src/ios/UILocalNotification+APPUserNotificationActions.h" />
         <source-file src="src/ios/UILocalNotification+APPUserNotificationActions.m" />
 
+        <header-file src="src/ios/AppDelegate+APPHandleActionWithIdentifier.h" />
+        <source-file src="src/ios/AppDelegate+APPHandleActionWithIdentifier.m" />
+
     </platform>
 
     <!-- android -->
