@@ -57,13 +57,4 @@
     [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler
-{
-    if ([identifier isEqualToString:@"NOTIFICATION_ACTION_IDENTIFIER"]) {
-        NSLog(@"handleActionWithIdentifier");
-    }
-
-    completionHandler();
-}
-
 @end
