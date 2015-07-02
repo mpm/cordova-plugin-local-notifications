@@ -25,21 +25,27 @@
 
 @implementation UILocalNotification (APPUserNotificationActions)
 
-- (void) setActions:(NSDictionary*)actions
+- (void) setActions:(NSArray*)actions
 {
-    UIMutableUserNotificationAction *action = [[UIMutableUserNotificationAction alloc] init];
-    action.identifier = actions[@"id"] ? actions[@"id"] : @"NOTIFICATION_ACTION_IDENTIFIER";
-    action.title = actions[@"title"];
+    NSMutableArray *notification_actions = [[NSMutableArray alloc] init];
 
-    action.activationMode = UIUserNotificationActivationModeBackground;
+    for (NSDictionary *action in actions) {
+        UIMutableUserNotificationAction *notification_action = [[UIMutableUserNotificationAction alloc] init];
+        notification_action.identifier = action[@"id"] ? action[@"id"] : @"NOTIFICATION_ACTION_IDENTIFIER";
+        notification_action.title = action[@"title"];
 
-    // If YES the action is red
-    action.destructive = 0; // actions[@"destructive"];
+        notification_action.activationMode = UIUserNotificationActivationModeBackground;
 
-    // If YES requires passcode, but does not unlock the device
-    action.authenticationRequired = 0; // actions[@"authenticationRequired"];
+        // If YES the action is red
+        notification_action.destructive = [action[@"destructive"] boolValue];
 
-    [self createCategoryWithActions:[NSArray arrayWithObjects:action, nil]];
+        // If YES requires passcode, but does not unlock the device
+        notification_action.authenticationRequired = [action[@"authenticationRequired"] boolValue];
+
+        [notification_actions addObject:notification_action];
+    }
+
+    [self createCategoryWithActions:notification_actions];
 }
 
 - (void) createCategoryWithActions:(NSArray*)actions

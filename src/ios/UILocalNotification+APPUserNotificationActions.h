@@ -25,6 +25,6 @@
 
 @interface UILocalNotification (APPUserNotificationActions)
 
-- (void) setActions:(NSDictionary*)actions;
+- (void) setActions:(NSArray*)actions;
 
 @end
