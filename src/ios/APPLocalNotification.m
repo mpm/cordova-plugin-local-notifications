@@ -631,8 +631,17 @@
 
 - (void) handleActionWithIdentifier:(NSNotification*)notification
 {
-    NSDictionary* userInfo = [notification userInfo];
-    [self fireEvent:@"action" notification:userInfo[@"localNotification"]];
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    NSDictionary* notificationUserInfo = [notification userInfo];
+
+    UILocalNotification *localNotification = notificationUserInfo[@"localNotification"];
+
+    [userInfo addEntriesFromDictionary:@{@"actionId": notificationUserInfo[@"identifier"]}];
+    [userInfo addEntriesFromDictionary:[localNotification userInfo]];
+
+    localNotification.userInfo = userInfo;
+
+    [self fireEvent:@"action" notification:localNotification];
 }
 
 #pragma mark -
