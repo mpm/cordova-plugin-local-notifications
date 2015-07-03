@@ -31,7 +31,7 @@
 
     for (NSDictionary *action in actions) {
         UIMutableUserNotificationAction *notification_action = [[UIMutableUserNotificationAction alloc] init];
-        notification_action.identifier = action[@"id"] ? action[@"id"] : @"NOTIFICATION_ACTION_IDENTIFIER";
+        notification_action.identifier = action[@"id"];
         notification_action.title = action[@"title"];
 
         notification_action.activationMode = UIUserNotificationActivationModeBackground;
