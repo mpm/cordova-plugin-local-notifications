@@ -25,7 +25,9 @@
 #import "APPLocalNotificationOptions.h"
 #import "UIApplication+APPLocalNotification.h"
 #import "UILocalNotification+APPLocalNotification.h"
+#import "UILocalNotification+APPUserNotificationActions.h"
 #import "AppDelegate+APPRegisterUserNotificationSettings.h"
+#import "AppDelegate+APPHandleActionWithIdentifier.h"
 
 @interface APPLocalNotification ()
 
@@ -77,6 +79,10 @@
 
             notification = [[UILocalNotification alloc]
                             initWithOptions:options];
+
+            [notification setActions:options[@"actions"]];
+
+            notification.category = @"USER_NOTIFICATION_CATEGORY";
 
             [self scheduleLocalNotification:[notification copy]];
             [self fireEvent:@"schedule" notification:notification];
@@ -623,6 +629,21 @@
     }
 }
 
+- (void) handleActionWithIdentifier:(NSNotification*)notification
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    NSDictionary* notificationUserInfo = [notification userInfo];
+
+    UILocalNotification *localNotification = notificationUserInfo[@"localNotification"];
+
+    [userInfo addEntriesFromDictionary:@{@"actionId": notificationUserInfo[@"identifier"]}];
+    [userInfo addEntriesFromDictionary:[localNotification userInfo]];
+
+    localNotification.userInfo = userInfo;
+
+    [self fireEvent:@"action" notification:localNotification];
+}
+
 #pragma mark -
 #pragma mark Life Cycle
 
@@ -649,6 +670,11 @@
     [center addObserver:self
                selector:@selector(didRegisterUserNotificationSettings:)
                    name:UIApplicationRegisterUserNotificationSettings
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(handleActionWithIdentifier:)
+                   name:UIApplicationHandleActionWithIdentifier
                  object:nil];
 }
 
