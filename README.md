@@ -4,7 +4,7 @@ This fork adds support for interactive notifications on iOS. It allows to add ac
 
 To add an action, define an array of action objects:
 
-```
+```js
 document.addEventListener('deviceready', function () {
     // Schedule notification for tomorrow to remember about the meeting
     cordova.plugins.notification.local.schedule({
