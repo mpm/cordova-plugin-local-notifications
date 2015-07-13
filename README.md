@@ -1,3 +1,50 @@
+#### Changes in this fork
+
+This fork adds support for interactive notifications on iOS. It allows to add actions which are then part of the notification a user can interact with.
+
+To add an action, define an array of action objects:
+
+```
+document.addEventListener('deviceready', function () {
+    // Schedule notification for tomorrow to remember about the meeting
+    cordova.plugins.notification.local.schedule({
+        id: 10,
+        title: "Meeting in 15 minutes!",
+        text: "Jour fixe Produktionsbesprechung",
+        at: tomorrow_at_8_45_am,
+        data: { meetingId:"#123FG8" },
+        actions: [
+            {
+                id: 'snooze',
+                title: 'Snooze',
+                destructive: false,
+                authenticationRequired: false
+            },
+            {
+                id: 'delete',
+                title: 'Delete',
+                destructive: true,
+                authenticationRequired: true
+            }
+        ]
+    });
+
+
+    cordova.plugins.notification.local.on("action", function (notification) {
+        if (notification.id == 10) {
+            if (notification.actionId == 'snooze') {
+                snoozeMeetingReminder(notification.data.meetingId);
+            } else if (notification.actionId == 'delete') {
+                deleteMeeting(notification.data.meetingId);
+            }
+        }
+    });
+  });
+```
+
+The `notification` parameter contains all properties from a notification plus the `actionId` (in the example above `snooze` or `delete`).
+
+---
 
 [![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L3HKQCD9UA35A "Donate once-off to this project using Paypal")
 
